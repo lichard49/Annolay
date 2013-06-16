@@ -1,7 +1,9 @@
 package com.lichard49.view;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,6 +28,9 @@ public class OverlayView extends JPanel implements ActionListener
 	
 	public void paintComponent(Graphics g)
 	{
+		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+		g.setColor(new Color(0, 0, 0, 1));
+		g.fillRect(0, 0, getWidth(), getHeight());
 		for(MousePath mp: listener.getPaths())
 		{
 			mp.draw(g);

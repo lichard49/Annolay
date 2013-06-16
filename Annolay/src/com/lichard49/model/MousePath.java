@@ -7,20 +7,22 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-import java.util.ArrayList;
+import java.util.Stack;
+
+import com.lichard49.view.SettingsDialog;
 
 public class MousePath
 {
-	private ArrayList<Point> points;
+	private Stack<Point> points;
 	private Color color;
 	private Stroke stroke;
 	
 	public MousePath(int x0, int y0)
 	{
-		points = new ArrayList<Point>();
+		points = new Stack<Point>();
 		points.add(new Point(x0, y0));
 		
-		color = Color.BLUE;
+		color = SettingsDialog.color;
 		stroke = new BasicStroke(10, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_ROUND);
 	}

@@ -3,26 +3,33 @@ package com.lichard49.model;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class PointerListener implements MouseListener, MouseMotionListener 
 {
-	private ArrayList<MousePath> paths;
+	private static Stack<MousePath> paths;
 	private MousePath currentPath;
 	
 	public PointerListener()
 	{
-		paths = new ArrayList<MousePath>();
+		paths = new Stack<MousePath>();
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
 		currentPath = new MousePath(e.getX(), e.getY());
-		paths.add(currentPath);
+		paths.push(currentPath);
 	}
 
+	public static MousePath undoPath()
+	{
+		if(!paths.isEmpty())
+			return paths.pop();
+		return null;
+	}
+	
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
@@ -34,7 +41,7 @@ public class PointerListener implements MouseListener, MouseMotionListener
 		currentPath.appendPoint(e.getX(), e.getY());
 	}
 	
-	public ArrayList<MousePath> getPaths()
+	public Stack<MousePath> getPaths()
 	{
 		return paths;
 	}

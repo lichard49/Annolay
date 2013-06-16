@@ -8,10 +8,12 @@ import javax.swing.JFrame;
 
 import com.lichard49.model.PointerListener;
 import com.lichard49.view.OverlayView;
+import com.lichard49.view.SettingsDialog;
 
 public class AnnolayMain
 {
-	private static final Color TRANSPARENT_BACKGROUND = new Color(0, 0, 0, 1);
+	private static final Color TRANSLUCENT_BACKGROUND = new Color(0, 0, 0, 1);
+	private static final Color TRANSPARENT_BACKGROUND = new Color(0, 0, 0, 0);
 	
 	public static void main(String[] args)
 	{
@@ -22,7 +24,7 @@ public class AnnolayMain
 		// frame configuration
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setUndecorated(true);
-		frame.setBackground(TRANSPARENT_BACKGROUND);
+		frame.setBackground(TRANSLUCENT_BACKGROUND);
 		frame.setContentPane(new OverlayView(new PointerListener()));
 		
 		// frame size
@@ -32,5 +34,7 @@ public class AnnolayMain
 		frame.setSize(xSize,ySize);
 		
 		frame.setVisible(true);
+		
+		new SettingsDialog(frame);
 	}
 }
