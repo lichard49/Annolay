@@ -23,7 +23,7 @@ public class MousePath
 		points.add(new Point(x0, y0));
 		
 		color = SettingsDialog.color;
-		stroke = new BasicStroke(10, BasicStroke.CAP_ROUND,
+		stroke = new BasicStroke(SettingsDialog.width, BasicStroke.CAP_ROUND,
 				BasicStroke.JOIN_ROUND);
 	}
 	
@@ -31,7 +31,6 @@ public class MousePath
 	{
 		points.add(new Point(x1, y1));
 	}
-	
 	public void draw(Graphics g)
 	{
 		Graphics2D g2 = (Graphics2D) g;
