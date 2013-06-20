@@ -6,26 +6,32 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
-import com.lichard49.model.PointerListener;
-import com.lichard49.view.OverlayView;
-import com.lichard49.view.SettingsDialog;
-
+/**
+ * Starts the application by creating the frame and controller and making
+ * things visible 
+ * 
+ * @author Richard
+ *
+ */
 public class AnnolayMain
 {
 	private static final Color TRANSLUCENT_BACKGROUND = new Color(0, 0, 0, 1);
-	private static final Color TRANSPARENT_BACKGROUND = new Color(0, 0, 0, 0);
+	//private static final Color TRANSPARENT_BACKGROUND = new Color(0, 0, 0, 0);
 	
 	public static void main(String[] args)
 	{
 		// create frame
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	
+		// create controller
+		Controller controller = new Controller(frame);
 		
 		// frame configuration
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setUndecorated(true);
 		frame.setBackground(TRANSLUCENT_BACKGROUND);
-		frame.setContentPane(new OverlayView(new PointerListener()));
+		frame.setContentPane(controller.getOverlayView());
 		
 		// frame size
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();  
@@ -33,8 +39,8 @@ public class AnnolayMain
 		int ySize = (int) screenSize.getHeight();  
 		frame.setSize(xSize,ySize);
 		
+		// show frame and dialog
 		frame.setVisible(true);
-		
-		new SettingsDialog(frame);
+		controller.setSettingsDialogVisible(true);
 	}
 }

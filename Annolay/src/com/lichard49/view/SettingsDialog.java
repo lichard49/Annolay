@@ -1,88 +1,95 @@
 package com.lichard49.view;
 
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-import com.lichard49.model.PointerListener;
+import com.lichard49.presenter.Controller;
 
-public class SettingsDialog extends JDialog implements WindowListener
+/**
+ * User interface dialog to give setting options to the user
+ * 
+ * @author Richard
+ *
+ */
+public class SettingsDialog extends JDialog
 {
-	JFrame parent;
-	public static Color color = Color.BLUE;
+	/** interface with the controller **/
+	private Controller controller;
+	/** parent frame necessary for dialogs**/
+	private JFrame parent;
 	
-	public SettingsDialog(JFrame frame)
+	/** button to open color chooser **/
+	private JButton colorChooserButton;
+	/** undo button **/
+	private JButton undoButton;
+	
+	/**
+	 * Constructor sets up user interface elements
+	 * 
+	 * @param c
+	 * @param frame
+	 */
+	public SettingsDialog(Controller c, JFrame frame)
 	{
 		super(frame, "ANNOtation overLAY");
+		controller = c;
 		parent = frame;
 		
-		addWindowListener(this);
+		addWindowListener(windowListener);
 		setSize(100, 100);
-		setVisible(true);
-		setLayout(new GridLayout(1, 2));
+		setLayout(new GridLayout(2, 1));
 		
-		JButton colorChooserButton = new JButton("Choose color");
+		colorChooserButton = new JButton("Choose color");
 		colorChooserButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				color = JColorChooser.showDialog(parent, "Pick a Color", color);
+				controller.setCurrentColor(JColorChooser.showDialog(parent, 
+						"Pick a Color", controller.getCurrentColor()));
 			}
 		});
 		add(colorChooserButton);
 		
-		JButton undoButton = new JButton("Undo");
+		undoButton = new JButton("Undo");
 		undoButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				PointerListener.undoPath();
+				controller.undoPath();
 			}
 		});
+		setUndoButtonEnabled(false);
 		add(undoButton);
 	}
-	@Override
-	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowClosing(WindowEvent e)
+	
+	/**
+	 * Set the accessibility to the undo button
+	 * 
+	 * @param enabled
+	 */
+	public void setUndoButtonEnabled(boolean enabled)
 	{
-		System.exit(0);
+		undoButton.setEnabled(enabled);
 	}
 	
-	@Override
-	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * Window listener ensures that closing the dialog shuts the entire
+	 * application down
+	 */
+	private WindowAdapter windowListener = new WindowAdapter()
+	{
+		@Override
+		public void windowClosing(WindowEvent e)
+		{
+			System.exit(0);
+		}
+	};
 }
