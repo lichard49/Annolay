@@ -107,6 +107,16 @@ public class Controller
 		return settingsModel.getCurrentColor();
 	}
 	
+	public void setCurrentWidth(int w)
+	{
+		settingsModel.setCurrentWidth(w);
+	}
+	
+	public int getCurrentWidth()
+	{
+		return settingsModel.getCurrentWidth();
+	}
+	
 	/**
 	 * Undo the last path, paint the overlay, and if that removed path was the
 	 * last path in the stack, then remove the ability to undo

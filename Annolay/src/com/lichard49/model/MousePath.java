@@ -16,6 +16,11 @@ import java.util.Stack;
 
 public class MousePath
 {
+	public static enum Attribute
+	{
+		COLOR, WIDTH
+	}
+	
 	/** the points that make up this path **/
 	private Stack<Point> points;
 	/** the color this path should be rendered with **/
