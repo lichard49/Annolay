@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import com.lichard49.model.MousePath;
 import com.lichard49.model.SettingsModel;
+import com.lichard49.view.OverlayFileChooser;
 import com.lichard49.view.OverlayView;
 import com.lichard49.view.SettingsDialog;
 
@@ -24,6 +25,8 @@ public class Controller
 	private OverlayView overlayView;
 	/** dialog view that gives the user settings **/
 	private SettingsDialog settingsDialog;
+	/** file chooser for opening and saving files **/
+	private OverlayFileChooser overlayFileChooser;
 	
 	/**
 	 * Creates the model and view and builds the appropriate relationships
@@ -31,11 +34,12 @@ public class Controller
 	 * 
 	 * @param frame
 	 */
-	public Controller(JFrame frame)
+	public Controller(JFrame parent)
 	{
 		settingsModel = new SettingsModel();
 		overlayView = new OverlayView(this);
-		settingsDialog = new SettingsDialog(this, frame);
+		settingsDialog = new SettingsDialog(this, parent);
+		overlayFileChooser = new OverlayFileChooser(parent);
 	}
 	
 	/**
@@ -130,5 +134,25 @@ public class Controller
 		if(settingsModel.getPaths().size() == 0)
 			settingsDialog.setUndoButtonEnabled(false);
 		return result;
+	}
+
+	/**
+	 * Calls upon the file chooser to save the current overlay as a file
+	 * 
+	 * @return save state
+	 */
+	public String saveOverlay()
+	{
+		return overlayFileChooser.saveOverlay(settingsModel.getPaths());
+	}
+	
+	/**
+	 * Calls upon the file chooser to open the overlay, which is in turned
+	 * rendered here
+	 */
+	public void openOverlay()
+	{
+		settingsModel.setPaths(overlayFileChooser.openOverlay());
+		overlayView.setPathsToDraw(settingsModel.getPaths(), true);
 	}
 }

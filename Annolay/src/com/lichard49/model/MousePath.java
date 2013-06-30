@@ -4,6 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Stroke;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Stack;
 
 /**
@@ -14,21 +18,14 @@ import java.util.Stack;
  *
  */
 
-public class MousePath
-{
-	public static enum Attribute
-	{
-		COLOR, WIDTH
-	}
-	
+public class MousePath implements Serializable
+{	
 	/** the points that make up this path **/
 	private Stack<Point> points;
 	/** the color this path should be rendered with **/
 	private Color color;
-	/** the width this path should be rendered with **/
-	private int width;
 	/** the stroke created based on the width **/
-	private Stroke stroke;
+	private BasicStroke stroke;
 	
 	/**
 	 * Constructor that accepts an initial point, as well as color and
@@ -44,10 +41,8 @@ public class MousePath
 		points = new Stack<Point>();
 		points.add(new Point(x0, y0));
 		
-		color = c;
-		width = w;
-		stroke = new BasicStroke(width, BasicStroke.CAP_ROUND,
-				BasicStroke.JOIN_ROUND);
+		setColor(c);
+		setWidth(w);
 	}
 	
 	/**
@@ -66,28 +61,77 @@ public class MousePath
 	 * 
 	 * @return stack of points
 	 */
-	public Stack<Point> getPoints()
-	{
-		return points;
-	}
+	public Stack<Point> getPoints() { return points; }
 	
 	/**
 	 * Get the color of this path
 	 * 
 	 * @return color
 	 */
-	public Color getColor()
-	{
-		return color;
-	}
+	public Color getColor() { return color; }
 	
 	/**
 	 * Get the stroke of this path
 	 * 
 	 * @return stroke
 	 */
-	public Stroke getStroke()
+	public Stroke getStroke() { return stroke; }
+	
+	/**
+	 * Set the color of this path
+	 * 
+	 * @param c
+	 */
+	private void setColor(Color c) { color = c; }
+	
+	/**
+	 * Set the points that make up this path
+	 * 
+	 * @param p
+	 */
+	private void setPoints(Stack<Point> p) { points = p; }
+	
+	/**
+	 * Set the width of this path
+	 * 
+	 * @param w
+	 */
+	private void setWidth(float w)
 	{
-		return stroke;
+		stroke = new BasicStroke(w, BasicStroke.CAP_ROUND,
+				BasicStroke.JOIN_ROUND);
+	}
+	
+	/**
+	 * Serialization behavior writes the attributes to the output stream in the
+	 * following order: color, stroke width, and points
+	 * 
+	 * Overrides Serializable method
+	 * 
+	 * @param out
+	 * @throws IOException
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException
+	{
+		out.writeObject(color);
+		out.writeFloat(stroke.getLineWidth());
+		out.writeObject(points);
+	}
+	
+	/**
+	 * Serialization behavior reads the attributes out of the input stream in
+	 * the following order: color, stroke width, and points
+	 * 
+	 * Overrides Serializable method
+	 * 
+	 * @param in
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		setColor((Color) in.readObject());
+		setWidth(in.readFloat());
+		setPoints((Stack<Point>)in.readObject());
 	}
 }

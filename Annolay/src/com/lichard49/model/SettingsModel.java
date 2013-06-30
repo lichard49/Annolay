@@ -62,10 +62,14 @@ public class SettingsModel
 	 * 
 	 * @return stack of paths
 	 */
-	public Stack<MousePath> getPaths()
-	{
-		return paths;
-	}
+	public Stack<MousePath> getPaths() { return paths; }
+	
+	/**
+	 * Replace all the current paths with the new stack
+	 * 
+	 * @param p
+	 */
+	public void setPaths(Stack<MousePath> p) { paths = p; }
 	
 	/**
 	 * Undo path by popping the top path
@@ -85,38 +89,26 @@ public class SettingsModel
 	 * 
 	 * @param c
 	 */
-	public void setCurrentColor(Color c)
-	{
-		currentColor = c;
-	}
+	public void setCurrentColor(Color c) { currentColor = c; }
 	
 	/**
 	 * Sets the currently selected width;
 	 * the next path will be drawn with this width
 	 * @param w
 	 */
-	public void setCurrentWidth(int w)
-	{
-		currentWidth = w;
-	}
+	public void setCurrentWidth(int w) { currentWidth = w; }
 	
 	/**
 	 * Gets the currently selected color
 	 * 
 	 * @return color
 	 */
-	public Color getCurrentColor()
-	{
-		return currentColor;
-	}
+	public Color getCurrentColor() { return currentColor; }
 	
 	/**
 	 * Gets the currently selected width
 	 * 
 	 * @return width
 	 */
-	public int getCurrentWidth()
-	{
-		return currentWidth;
-	}
+	public int getCurrentWidth() { return currentWidth; }
 }

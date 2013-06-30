@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.Stack;
 
 import javax.swing.JPanel;
@@ -31,6 +32,9 @@ public class OverlayView extends JPanel
 	private Stack<MousePath> pathsToDraw = null;
 	/** whether to clear the screen or not flag**/
 	private boolean clear = false;
+
+	int x=0;
+	int y=0;
 	
 	/**
 	 * Constructor sets appropriate mouse listeners
@@ -41,8 +45,12 @@ public class OverlayView extends JPanel
 	{
 		controller = c;
 		
+		setFocusable(true);
+		
 		addMouseListener(mouseListener);
 		addMouseMotionListener(mouseListener);
+		addMouseWheelListener(mouseListener);
+		addKeyListener(keyListener);
 	}
 	
 	/**
@@ -74,6 +82,7 @@ public class OverlayView extends JPanel
 			for(MousePath currentPath: pathsToDraw)
 			{
 				Graphics2D g2 = (Graphics2D) g;
+				g2.translate(x, y);
 				// set transparency to visible
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 						RenderingHints.VALUE_ANTIALIAS_ON);
@@ -120,5 +129,54 @@ public class OverlayView extends JPanel
 		{
 			controller.mouseDragged(e.getX(), e.getY());
 		}
+		
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e)
+		{
+			x += e.getWheelRotation();
+			clear=true;
+			repaint();
+		}
+	};
+	
+	private KeyListener keyListener = new KeyListener()
+	{
+
+		@Override
+		public void keyTyped(KeyEvent e)
+		{
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			switch(e.getKeyCode())
+			{
+			case KeyEvent.VK_UP:
+				y-=5;
+				break;
+			case KeyEvent.VK_DOWN:
+				y+=5;
+				break;
+			case KeyEvent.VK_LEFT:
+				x-=5;
+				break;
+			case KeyEvent.VK_RIGHT:
+				x+=5;
+				break;
+			}
+			clear = true;
+			repaint();
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	};
 }
+
